@@ -1,0 +1,9 @@
+/.gradle/
+/.kotlin/
+/local.properties
+**/build/
+**/*.apk
+**/*.jks
+**/*.keystore
+**/*.pk8
+**/issuer-private*
