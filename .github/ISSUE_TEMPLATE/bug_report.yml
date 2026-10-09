@@ -1,0 +1,33 @@
+name: Bug report / 问题反馈
+description: Report a reproducible SCRMod issue
+body:
+  - type: markdown
+    attributes:
+      value: 请勿上传手机号、短信内容、设备码、授权文件或其他私人信息。
+  - type: input
+    id: version
+    attributes:
+      label: 应用版本与安装来源 / Version and source
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: 设备型号与固件 / Device and firmware
+    validations:
+      required: true
+  - type: textarea
+    id: root
+    attributes:
+      label: Root 状态 / Root environment
+      description: SCRoot / KernelSU-Next 状态，是否发生重启或权限失效。
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 步骤、预期与实际结果 / Steps and results
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: 脱敏日志或截图 / Redacted evidence
