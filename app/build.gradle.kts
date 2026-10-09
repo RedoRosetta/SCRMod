@@ -12,8 +12,8 @@ android {
         applicationId = "com.scr01.mod"
         minSdk = 30
         targetSdk = 35
-        versionCode = 40
-        versionName = "1.0 (build11)"
+        versionCode = 41
+        versionName = "1.0 (build12)"
         resValue("string", "app_name", "SCRMod")
     }
 
