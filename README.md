@@ -7,11 +7,11 @@
 <p align="center">
 <img src="https://img.shields.io/badge/Device-SCR--01-466775?style=flat-square" alt="目标设备 SCR-01">
 <img src="https://img.shields.io/badge/Android-11-466775?style=flat-square" alt="目标系统 Android 11">
-<img src="https://img.shields.io/badge/Release-1.0_build11-466775?style=flat-square" alt="当前版本 1.0 build11">
+<img src="https://img.shields.io/badge/Release-1.0_build12-466775?style=flat-square" alt="当前版本 1.0 build12">
 <img src="https://img.shields.io/badge/SMS-Beta-8a6d3b?style=flat-square" alt="短信功能处于 Beta 阶段">
 </p>
 
-<p align="center"><a href="https://github.com/RedoRosetta/SCRMod/releases/download/v1.0-build11/SCRMod-1.0-build11-v40-slim-ui-aligned-v9.apk"><strong>下载 APK</strong></a> · <a href="#下载与安装">安装指南</a> · <a href="https://github.com/RedoRosetta/SCRMod/releases/tag/v1.0-build11">版本说明</a> · <a href="https://github.com/RedoRosetta/SCRMod/issues/new/choose">问题反馈</a> · <a href="#源码与许可">源码范围</a></p>
+<p align="center"><a href="https://github.com/RedoRosetta/SCRMod/releases/download/v1.0-build12/SCRMod-1.0-build12-v41.apk"><strong>下载 APK</strong></a> · <a href="#下载与安装">安装指南</a> · <a href="https://github.com/RedoRosetta/SCRMod/releases/tag/v1.0-build12">版本说明</a> · <a href="https://github.com/RedoRosetta/SCRMod/issues/new/choose">问题反馈</a> · <a href="#源码与许可">源码范围</a></p>
 
 <p align="center">Samsung Galaxy 5G Mobile Wi-Fi SCR-01 / SM-H412J · Android 11 · 横竖屏与深浅色模式</p>
 
@@ -35,7 +35,9 @@ SCRMod 把 SCR-01 日常使用中常见的几件事放到一起：**调整热点
 
 ## 短信功能修复 · Beta
 
-完整安装包提供针对 SCR-01 的短信收发修复入口。按运营商选择移动、联通或电信方案，查看接收和发送状态；需要重新处理时，点击「重新配置」。移动方案另提供 IMS 兼容开关。
+**build12 更新：修复联通 SIM 卡短信收发异常，测试版本已由用户实测确认生效。** 更新后选择「联通」，开启联通兼容并点击「重新配置」。
+
+完整安装包提供针对 SCR-01 的短信收发修复入口。按运营商选择移动、联通或电信方案，查看接收和发送状态；需要重新处理时，点击「重新配置」。各运营商方案提供对应的 IMS 兼容开关。
 
 <p align="center"><img src="assets/screenshots/sms-original.png" width="960" alt="短信功能修复：运营商选择、授权管理、重新配置和收发状态"></p>
 
@@ -54,7 +56,7 @@ NAT 功能用于诊断，不提供 Full Cone 或 NAT A 保证，也不能改变�
 
 ## 下载与安装
 
-**[下载 SCRMod 1.0 (build11)](https://github.com/RedoRosetta/SCRMod/releases/download/v1.0-build11/SCRMod-1.0-build11-v40-slim-ui-aligned-v9.apk)** · [版本说明与校验文件](https://github.com/RedoRosetta/SCRMod/releases/tag/v1.0-build11)
+**[下载 SCRMod 1.0 (build12)](https://github.com/RedoRosetta/SCRMod/releases/download/v1.0-build12/SCRMod-1.0-build12-v41.apk)** · [版本说明与校验文件](https://github.com/RedoRosetta/SCRMod/releases/tag/v1.0-build12)
 
 1. 按 [SCRoot](https://github.com/hackintoanetwork/SCRoot) 的说明准备 SCR-01，取得临时 Root，并确认 KernelSU-Next 权限可用。
 2. 下载并安装 Release 中的 **APK**。同签名版本可覆盖更新，保留应用数据。
@@ -66,12 +68,12 @@ SCRMod 使用设备已有的 Root 环境，不负责获取 Root。重启后需�
 <details>
 <summary>版本、签名与文件校验</summary>
 
-当前版本为 **1.0 (build11)**，`versionCode 40`，APK 约 **25.7 MiB**。安装包经过压缩，沿用历史 Android debug 证书以保持覆盖升级兼容性，尚未切换独立生产证书。遇到签名冲突时不要直接卸载，以免丢失设置与授权。
+当前版本为 **1.0 (build12)**，`versionCode 41`，APK 约 **25.7 MiB**。安装包经过压缩，沿用历史 Android debug 证书以保持覆盖升级兼容性，尚未切换独立生产证书。遇到签名冲突时不要直接卸载，以免丢失设置与授权。
 
 SHA-256：
 
 ```text
-4f919a9f3adc36a25b746452b5cbf253197418e2a310ef8a2b02f83816a2e298
+0ab21d2fe76673d8427894a457cb9f74a16f7889a9d1ddee240afd81e1cb011a
 ```
 
 </details>
