@@ -1,119 +1,121 @@
-<img src="scrmod-app-icon.png" width="96" alt="SCRMod 应用图标">
+<p align="center"><img src="scrmod-app-icon.png" width="112" alt="SCRMod 应用图标"></p>
 
-# SCRMod
+<h1 align="center">SCRMod</h1>
 
-面向 Samsung Galaxy 5G Mobile Wi-Fi SCR-01 / SM-H412J 的设备控制与诊断应用。
+<p align="center"><strong>Advanced Control &amp; Diagnostics for Samsung SCR-01</strong><br>把热点控制、数据上限与设备诊断，放进一个清晰的界面。</p>
 
-Device controls and diagnostics for the Samsung SCR-01 / SM-H412J mobile router.
+<p align="center">
+<img src="https://img.shields.io/badge/Device-SCR--01-466775?style=flat-square" alt="目标设备 SCR-01">
+<img src="https://img.shields.io/badge/Android-11-466775?style=flat-square" alt="目标系统 Android 11">
+<img src="https://img.shields.io/badge/Release-1.0_build11-466775?style=flat-square" alt="当前版本 1.0 build11">
+<img src="https://img.shields.io/badge/SMS-Beta-8a6d3b?style=flat-square" alt="短信功能处于 Beta 阶段">
+</p>
 
-SCRMod 将热点状态、5 GHz 信道设置、数据使用上限和诊断记录集中在一个界面中，支持横竖屏与深浅色模式。完整安装包另提供短信功能修复；短信实现不在公开源码中。
+<p align="center"><a href="https://github.com/RedoRosetta/SCRMod/releases/download/v1.0-build11/SCRMod-1.0-build11-v40-slim-ui-aligned-v9.apk"><strong>下载 APK</strong></a> · <a href="#下载与安装">安装指南</a> · <a href="https://github.com/RedoRosetta/SCRMod/releases/tag/v1.0-build11">版本说明</a> · <a href="https://github.com/RedoRosetta/SCRMod/issues/new/choose">问题反馈</a> · <a href="#源码与许可">源码范围</a></p>
 
-The app brings hotspot information, 5 GHz channel configuration, data-limit settings and diagnostic logs into one interface. It adapts to portrait and landscape and supports light and dark themes. The full APK also offers SMS repair; that implementation is not part of the public source.
+<p align="center">Samsung Galaxy 5G Mobile Wi-Fi SCR-01 / SM-H412J · Android 11 · 横竖屏与深浅色模式</p>
 
-## 页面预览 / Interface Preview
+> **安装前请了解：** 控制功能需要设备已有的 Root 环境，请先参考 [SCRoot](https://github.com/hackintoanetwork/SCRoot)。完整 APK 保留短信功能修复；公开源码不包含短信与授权实现。三星短信 APP 需另行准备，不随本项目分发。
 
-### 首页 / Home
+## 设备状态，一眼看清
 
-查看 Root、热点和短信就绪状态；分别设置月度与 3 天数据上限。
+SCRMod 专为 SCR-01 设计，将原本分散的热点设置、数据上限和诊断信息集中到一起。首页展示 Root、热点及完整 APK 的短信就绪状态，让你先了解设备，再决定是否调整。
 
-![首页：状态总览与数据使用上限](assets/screenshots/home-original.png)
+<p align="center"><img src="assets/screenshots/home-original.png" width="960" alt="首页：Root、热点、短信状态与数据使用上限"></p>
 
-### 网络 / Network
+**数据上限分别设置。** 支持月度和 3 天两个周期，选择周期、输入上限并应用，也可以直接恢复默认设置。可保存配置并选择开机自动应用；开机设置本身不会授予 Root。
 
-查看实际热点频段、信道和带宽，再选择待应用的信道。图中的当前信道与待应用值可以不同。
+## 热点控制与网络诊断
 
-![网络：热点状态与信道设置](assets/screenshots/network-original.png)
+网络页展示实际热点启停、频段、信道、频率和带宽，并提供系统频段设置与受支持的 5 GHz 信道应用入口。
 
-### 短信功能修复 / SMS Repair
+<p align="center"><img src="assets/screenshots/network-original.png" width="960" alt="网络页：实际热点状态、待应用信道与开机自动应用设置"></p>
 
-完整 APK 提供运营商方案、收发状态、授权管理和重新配置。该页面不包含在公开源码构建中。
+当前信道与待应用信道分别显示，截图中的两个值可以不同。实际应用受频段、热点状态、设备固件及安全检查约束。
 
-![完整 APK 的短信功能修复界面](assets/screenshots/sms-original.png)
+**NAT 诊断用于了解当前网络出口。** 它不承诺 Full Cone 或 NAT A，也不能改变运营商 CGNAT 的策略。设置页还提供运行记录查看与复制，方便定位设备侧的问题。
 
-截图由维护者提供，展示拍摄时的界面和状态；不据此保证所有 SIM、运营商或网络条件下的功能结果。
+## 短信功能修复 · Beta
 
-## 项目基础与致谢 / Foundation and Acknowledgments
+完整 APK 提供运营商方案选择、短信接收与发送状态、授权管理和重新配置入口；移动方案还提供 IMS 兼容控制。
 
-本项目依托 [SCRoot](https://github.com/hackintoanetwork/SCRoot) 为 SCR-01 提供的临时 Root 与 KernelSU-Next 支持运行。感谢 hackintoanetwork 及 SCRoot 项目贡献者对 SCR-01 的适配工作。SCRMod 使用设备已有的 Root 环境，不实现或捆绑 SCRoot 的提权流程；SCRoot 与 SCRMod 为独立项目。
+<p align="center"><img src="assets/screenshots/sms-original.png" width="960" alt="完整 APK：短信功能修复、运营商方案、授权与收发状态"></p>
 
-SCRMod relies on the temporary root and KernelSU-Next environment provided by SCRoot. Thanks to hackintoanetwork and the SCRoot contributors for supporting this device. Root setup belongs to SCRoot; SCRMod uses the resulting permissions to control and inspect the router.
+该功能需要兼容的三星短信 APP、相应授权以及可用的设备环境。兼容性受 APP 版本、固件、运营商、SIM 和 IMS 状态影响，仍处于 Beta 阶段，不保证所有场景的收发结果。
 
-## 下载 / Download
+短信、IMS、注入资产及授权实现不包含在公开源码中。三星官方 APP 不包含在本仓库或 SCRMod APK 中。
 
-完整安装包通过 [Releases](https://github.com/RedoRosetta/SCRMod/releases) 提供。源码下载用于构建不含短信实现的公开版，不能重建包含短信修复的完整 APK。
+*以上三张图片来自维护者提供的真实运行截图，已统一裁去窗口边框与系统栏，保留原始页面像素。图中的就绪状态只反映拍摄时的设备，不代表所有运营商和使用场景都已通过验收。*
 
-Download the full APK from [Releases](https://github.com/RedoRosetta/SCRMod/releases). The public source builds a version without SMS repair and cannot reproduce the full APK.
+## 下载与安装
 
-当前版本：`1.0 (build11)`，`versionCode 40`。安装包约 25.7 MiB。
+1. 按 [SCRoot 项目说明](https://github.com/hackintoanetwork/SCRoot)准备目标设备，取得临时 Root，并确认 KernelSU-Next 权限可用。
+2. 下载 [SCRMod 1.0 (build11) APK](https://github.com/RedoRosetta/SCRMod/releases/download/v1.0-build11/SCRMod-1.0-build11-v40-slim-ui-aligned-v9.apk)。GitHub 自动生成的 **Source code** 是公开版源码，不能作为安装包使用。
+3. 安装并授予 SCRMod Root 权限，先查看首页检查结果，再按需调整热点与数据上限。
+4. 使用短信修复前，另行准备兼容的三星短信 APP，并完成应用内要求的授权。
 
-APK: `SCRMod-1.0-build11-v40-slim-ui-aligned-v9.apk`.
+当前安装包约 **25.7 MiB**，`versionCode 40`。[Release 与校验文件](https://github.com/RedoRosetta/SCRMod/releases/tag/v1.0-build11)
 
-SHA-256: `4f919a9f3adc36a25b746452b5cbf253197418e2a310ef8a2b02f83816a2e298`
+<details>
+<summary>安装包校验与升级签名</summary>
 
+SHA-256：
 
+```text
+4f919a9f3adc36a25b746452b5cbf253197418e2a310ef8a2b02f83816a2e298
+```
 
-## 主要功能 / Main Features
+APK 为非 debuggable 的优化 Release 构建，已启用 R8 与资源压缩。为了保持已有设备的覆盖升级能力，沿用历史 Android debug 证书，尚未切换独立生产签名证书。同签名版本可覆盖安装保留数据；签名冲突时不要直接卸载，以免丢失配置与授权。
 
-- 查看 Root、设备和固件检查结果。 Inspect root availability and device compatibility.
-- 查看热点启停、频段、信道、频率和带宽。 Read hotspot state, band, channel, frequency and bandwidth.
-- 打开系统频段设置，并在检查通过时应用受支持的 5 GHz 信道。 Open system band settings and apply supported channels behind compatibility checks.
-- 分别设置月度与 3 天的数据使用上限，支持恢复默认。 Configure separate monthly and three-day usage limits and restore defaults.
-- 保存设置并选择开机自动应用。 Save settings and opt into applying them after boot.
-- 进行本机 NAT 出口诊断、查看和复制运行记录。 Run local NAT diagnostics and review logs.
-- 完整安装包提供短信功能修复及离线授权管理；公开源码版不包含这些模块。 The full APK includes SMS repair and offline authorization; the public source excludes these modules.
+</details>
 
-## 兼容性与前置条件 / Compatibility and Requirements
+## 兼容性与运行条件
 
-| 项目 / Item | 目标 / Target |
+| 项目 | 当前目标环境 |
 | --- | --- |
-| 设备 / Device | Samsung SCR-01 / SM-H412J |
-| 系统 / Android | Android 11 |
-| 固件 / Firmware | SCR01KDU1AVK2 |
-| 内核 / Kernel | 4.14.186-24165939 |
-| Root 环境 / Root environment | SCRoot 临时 Root、可用的 KernelSU-Next 权限 |
+| 设备 | Samsung Galaxy 5G Mobile Wi-Fi SCR-01 / SM-H412J |
+| 系统 | Android 11 |
+| 固件 | SCR01KDU1AVK2 |
+| 内核 | 4.14.186-24165939 |
+| Root | SCRoot 提供的临时 Root 与可用的 KernelSU-Next 权限 |
+| 其他设备或固件 | 未保证兼容；控制功能受设备与模块检查约束 |
 
-控制功能受设备、固件、内核和模块完整性检查约束，不是面向所有 Android 热点设备的通用工具。
+SCRMod 使用已有的 Root 权限，不负责解锁 Bootloader、获取永久 Root 或自动恢复提权。临时 Root 在重启后失效，重新获取权限应按 SCRoot 的说明处理。
 
-Controls depend on the supported device profile and module integrity. This is not a generic Android hotspot tool.
+## 功能边界与已知限制
 
-SCRoot 的临时 Root 在重启后失效；是否重新获得权限由 SCRoot 的配置和运行结果决定。SCRMod 的开机自动应用设置不等于自动获得 Root。
+- **设备与信道：** 实际支持范围取决于硬件、驱动、固件及安全检查，不是通用 Android 热点控制工具。
+- **短信：** 页面显示就绪或安装启动成功，不等于实际短信收发已验证。
+- **网络：** 本地诊断不能绕过上游网络限制，不提供 Full Cone 或 NAT A 保证。
+- **界面：** 应用以简体中文为主，英文副标题不表示已提供完整英文界面。
 
-Temporary root is lost on reboot. Root recovery is handled by SCRoot; SCRMod's boot setting does not grant root access.
+完整 APK 已完成构建、135 项测试以及目标 SCR-01 的覆盖安装与启动核对；公开源码版已通过独立构建和 59 项测试。这些结果与真实 UI、短信及网络场景验收分别说明。
 
-## 安装 / Installation
+## 源码与许可
 
-1. 按 SCRoot 项目说明准备目标设备并取得临时 Root。 Set up temporary root using the SCRoot instructions.
-2. 从 Releases 获取完整 APK 并安装。同签名版本可覆盖升级保留数据。 Install the full APK; matching signatures allow an in-place update.
-3. 为 SCRMod 授予 Root 权限，确认首页检查结果。 Grant root to SCRMod and check the reported status.
-4. 按需调整热点、数据上限和开机设置。 Configure only the controls you need.
-5. 短信修复另外依赖用户自行准备的兼容三星短信 APP，以及应用内要求的授权。该三星 APP 不随本仓库或 SCRMod APK 提供。 SMS repair additionally requires a compatible Samsung messaging app supplied separately by the user and the authorization required by SCRMod. No Samsung APK is distributed here.
+| 材料 | 公开源码 | 完整 APK |
+| --- | --- | --- |
+| UI、设备检查、热点与信道控制、数据上限、NAT 诊断 | 包含 | 包含 |
+| 短信修复、IMS 兼容、注入资产及后台任务 | 不包含 | 保留 |
+| 授权实现与签发工具 | 不包含 | 仅含客户端授权功能 |
+| 三星短信 APP、SCRoot 提权程序、私钥 | 不包含 | 不包含 |
 
-当前完整 APK 为非 debuggable、经过压缩的 Release 构建，沿用历史 Android debug 证书签名以保持现有设备覆盖升级。它不是使用独立生产证书签署的版本。
+公开源码可以构建基础功能版，**不能重建包含短信修复的完整 APK**。[源码范围](docs/SOURCE_SCOPE.md) · [构建说明](docs/BUILD.md) · [第三方材料](THIRD_PARTY_NOTICES.md)
 
-The APK is a non-debuggable, optimized Release build signed with the historical Android debug certificate for upgrade compatibility. It does not yet use a dedicated production signing certificate.
+自有应用源码暂未授予开源许可证，版权由作者保留；第三方组件与资产遵循各自许可证。信道模块目前只有带 GPL 标记的预编译二进制，对应 C 源码与构建材料仍待找回；其他第三方材料缺项见第三方清单，不宣称完整可复现构建或许可审查已完成。
 
-## 已知限制 / Known Limitations
+## 项目基础与致谢
 
-- 实际信道应用取决于当前频段、热点状态和安全检查。 Channel changes depend on the active band and safety checks.
-- 临时 Root 失效、重启或系统变化可能影响功能。 Root loss, reboot or system changes may affect operation.
-- 短信行为受三星短信 APP 版本、运营商、SIM 和设备状态影响；安装启动成功不代表收发验收完成。 SMS results depend on the messaging app, carrier, SIM and device state; startup does not validate message delivery.
-- NAT 功能用于诊断当前出口，不提供 Full Cone 或 NAT A 保证。 NAT diagnostics do not promise Full Cone or NAT A.
-- 当前界面以简体中文为主，英文 README 不表示应用已完整英文化。 The app primarily uses Simplified Chinese; this README does not imply full English UI support.
+SCRMod 依托 [SCRoot](https://github.com/hackintoanetwork/SCRoot) 为 SCR-01 提供的临时 Root 与 KernelSU-Next 支持运行。感谢 **hackintoanetwork 及 SCRoot 项目贡献者**对这款设备的适配工作。
 
-## 源码公开范围 / Public Source Scope
+SCRoot 与 SCRMod 为独立项目。SCRMod 使用其建立的 Root 环境，不实现或捆绑 SCRoot 的提权流程，也不重新分发其安装包。
 
-本仓库公开 UI、热点与信道控制、数据上限、Root 命令执行、状态读取和诊断相关源码。短信收发修复、IMS 兼容实现、注入脚本和运行程序、短信后台任务、授权实现与签发工具均不公开。
+## 问题反馈
 
-UI, hotspot/channel controls, data-limit handling, root command execution and diagnostics are included. SMS repair, IMS compatibility, injection assets, SMS workers, authorization and issuer tools are excluded.
+欢迎通过 [GitHub Issues](https://github.com/RedoRosetta/SCRMod/issues/new/choose)反馈错误、兼容性问题和功能建议。请提供设备型号、固件、应用版本、操作步骤、预期结果与实际结果。
 
-完整 APK 与公开源码版有意保持不同的功能范围。详见 [源码范围](docs/SOURCE_SCOPE.md) 和 [构建说明](docs/BUILD.md)。
+上传日志或截图前，请删除短信内容、手机号、设备码、授权文件、密钥、序列号、IP 地址等不希望公开的信息。[安全说明](SECURITY.md)
 
-## 反馈 / Feedback
+---
 
-提交 Issue 时请附设备型号、固件、应用版本、相关功能、操作步骤及实际结果。日志上传前请删去手机号、短信内容、设备码、授权文件、序列号、IP 地址和其他不希望公开的信息。
-
-When reporting a problem, include the model, firmware, app version, steps and observed result. Redact personal identifiers, message contents and credentials before sharing logs.
-
-## 第三方材料 / Third-Party Materials
-
-见 [第三方清单](THIRD_PARTY_NOTICES.md)。本项目不会重新分发三星官方 APP 或 SCRoot 安装包。公开的自有源码暂未授予开源许可证，版权由作者保留；第三方组件遵循各自许可证。
+<p align="center"><strong>SCRMod</strong><br>Advanced Control &amp; Diagnostics for Samsung SCR-01<br>Developed by <a href="https://github.com/RedoRosetta">RedoRosetta</a></p>
