@@ -1,6 +1,6 @@
 # 下载校验
 
-以下为待发布公开源码包的 SHA-256。完整功能 APK 暂不在 GitHub 公开提供；如需使用请联系作者。
+以下为待发布公开源码包的 SHA-256。GitHub 专版 APK 与源码包在对应 Release 提供。
 
 文件：`SCRMod-public-source-build58.zip`
 
@@ -27,3 +27,7 @@ shasum -a 256 SCRMod-public-source-build58.zip
 ```
 
 结果应逐字符一致，字母大小写不影响比较。哈希用于核对文件内容，不能代替对来源的确认。源码包不能作为 APK 安装，也不能重建完整功能版本。
+
+APK：SCRMod-1.0-build58-GitHub.apk
+SHA-256：e87915e330b42c2f32d9160168f7bec96025d4aa74dee592bc21559874839c17
+
