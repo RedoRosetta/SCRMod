@@ -66,11 +66,11 @@ class BootAndDataPeriodsTest {
         assertFalse(BootSettingsPolicy.restoreData(settings, DataUsageMaxOverrideConfig(enabled = true)))
         assertTrue(BootSettingsPolicy.restoreData(settings, DataUsageMaxOverrideConfig(recoveryPending = true)))
     }
-    @Test fun bootMasterOnRestoresOnlyEnabledSettingsAndChannelOptIn() {
+    @Test fun bootMasterOnRestoresEnabledDataAndChannelRegardlessOfLegacyOptIn() {
         val settings = AutoChannelSettings(applyAfterBoot = true, applyOnBoot = false)
         assertFalse(BootSettingsPolicy.restoreData(settings, DataUsageMaxOverrideConfig()))
         assertTrue(BootSettingsPolicy.restoreData(settings, DataUsageMaxOverrideConfig(enabled = true)))
-        assertFalse(BootSettingsPolicy.restoreChannel(settings))
+        assertTrue(BootSettingsPolicy.restoreChannel(settings))
         assertTrue(BootSettingsPolicy.restoreChannel(settings.copy(applyOnBoot = true)))
     }
 }
