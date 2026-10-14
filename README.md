@@ -10,7 +10,7 @@ SCRMod 建立在 [SCRoot](https://github.com/hackintoanetwork/SCRoot) 提供的�
 
 [发布页面](https://github.com/RedoRosetta/SCRMod/releases) · [使用说明](docs/GETTING_STARTED.md) · [Build58 更新记录](docs/RELEASE_BUILD58.md) · [问题反馈](https://github.com/RedoRosetta/SCRMod/issues/new/choose)
 
-> 当前文档对应 1.0 Build58。GitHub 暂不公开提供完整功能版本，公开源码范围见下文。
+> 当前文档对应 1.0 Build58。GitHub 专版安装包见 Release，公开源码范围见下文。
 
 <p align="center">
   <img src="assets/screenshots/01-home-landscape-light.png" width="960" alt="SCRMod 首页：网络、热点、短信状态和流量上限设置">
@@ -42,7 +42,7 @@ SCRMod 建立在 [SCRoot](https://github.com/hackintoanetwork/SCRoot) 提供的�
 
 为原设备补充短信收发支持，提供移动、联通、电信对应方案，包括为当前 SIM 自动写入网络与短信 APN、IMS 兼容处理，以及短信发送和接收 Hook。页面分别显示各组件状态，方便判断哪个环节需要处理。
 
-短信功能依赖三星原生短信 APP，该 APP 并非本项目作者开发。因此，GitHub 暂不公开发布完整功能版本供使用。如需使用短信功能，请联系作者了解使用方式。
+短信功能依赖三星原生短信 APP，该 APP 并非本项目作者开发。GitHub 专版保留短信功能所需的客户端实现，但不附带三星短信 APP。如需使用短信功能，请联系作者了解兼容 APP 与授权方式。
 
 短信兼容性受固件、SIM、运营商及短信 APP 版本影响。配置完成后仍需实际测试发送和接收，页面显示运行中并不等于收发一定正常。
 
@@ -54,8 +54,8 @@ SCRMod 建立在 [SCRoot](https://github.com/hackintoanetwork/SCRoot) 提供的�
 
 设置页提供诊断信息的读取与导出，便于分析运行状态和排查故障。网络页提供 NAT 检测，可查看当前网络出口的 NAT 类型及映射信息，辅助判断连接环境。
 
-<details>
-<summary>查看更多界面：网络检测、小区信息与深色主题</summary>
+
+### 网络检测、小区信息与深色主题
 
 <p align="center">
   <img src="assets/screenshots/03-network-nat-landscape-light.png" width="960" alt="网络页面：蜂窝设置入口与 NAT 检测，公网映射信息已遮盖" loading="lazy">
@@ -69,12 +69,12 @@ SCRMod 建立在 [SCRoot](https://github.com/hackintoanetwork/SCRoot) 提供的�
   <img src="assets/screenshots/06-settings-portrait-dark.png" width="30%" alt="深色竖屏设置页面" loading="lazy">
 </p>
 
-</details>
+
 
 ## 下载与安装
 
 1. 先按 SCRoot 项目说明准备临时 Root 环境。
-2. GitHub 提供部分功能的公开源码，不能直接作为 APK 安装。如需完整功能版本，请联系作者。
+2. 从 [Build58 Release](https://github.com/RedoRosetta/SCRMod/releases/tag/v1.0-build58) 下载 GitHub 专版 APK 并核对校验值后安装。源码压缩包不能直接安装。
 3. 打开 SCRMod 并授予 Root 权限，按需调整热点、流量上限及网络设置。
 4. 短信功能的使用与授权方式，请联系作者确认。不要在公开 Issue 中提交设备码或授权材料。
 
@@ -90,7 +90,7 @@ Build58 减少了重复的授权资源加载和短信组件状态读取，并调
 
 ## 源码与许可
 
-当前仓库仍保留此前公开的基础功能源码，Build58 配套源码尚未同步。短信、IMS、注入、授权及 APN 实现不在公开范围。**公开源码无法构建完整功能 APK**，其界面也与上面的完整应用截图有所区别。[查看源码范围](docs/SOURCE_SCOPE.md)。
+仓库同步了 Sol 审核后的 Build58 部分功能源码。短信、IMS、注入、授权及 APN 实现不在公开范围。**公开源码无法构建完整功能 APK**，其界面也与上面的完整应用截图有所区别。[查看源码范围](docs/SOURCE_SCOPE.md)。
 
 自有代码暂未授予统一开源许可证，第三方代码和组件遵循各自许可证。
 
@@ -122,3 +122,4 @@ Build58 减少了重复的授权资源加载和短信组件状态读取，并调
 ---
 
 <p align="center"><strong>SCRMod</strong><br>Advanced Control &amp; Diagnostics for Samsung SCR-01<br>Developed by <a href="https://github.com/RedoRosetta">RedoRosetta</a></p>
+

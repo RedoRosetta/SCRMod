@@ -6,4 +6,11 @@
 **/*.jks
 **/*.keystore
 **/*.pk8
+**/*.pem
 **/issuer-private*
+/.android*/
+/.build-keys/
+/audit/
+/diagnostics/
+/agent-source/
+/tools/
