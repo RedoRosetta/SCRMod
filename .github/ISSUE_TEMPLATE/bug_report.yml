@@ -1,33 +1,45 @@
-name: Bug report / 问题反馈
-description: Report a reproducible SCRMod issue
+name: 问题反馈
+description: 报告安装、界面或功能异常
+title: "[问题] "
 body:
   - type: markdown
     attributes:
-      value: 请勿上传手机号、短信内容、设备码、授权文件或其他私人信息。
+      value: "请勿上传短信正文、号码、完整 PDU、设备码、授权文件、密钥、客户日志或完整原始诊断。优先文字描述，截图请先裁剪打码。"
   - type: input
     id: version
     attributes:
-      label: 应用版本与安装来源 / Version and source
+      label: 应用版本与安装来源
+      placeholder: "例如：1.0 Build58 Public，自行构建"
     validations:
       required: true
   - type: input
-    id: device
+    id: environment
     attributes:
-      label: 设备型号与固件 / Device and firmware
+      label: 设备型号、固件与 Root 状态
+      description: "只写型号、固件版本及 Root 是否可用，不填写任何设备唯一标识。"
     validations:
       required: true
   - type: textarea
-    id: root
+    id: reproduce
     attributes:
-      label: Root 状态 / Root environment
-      description: SCRoot / KernelSU-Next 状态，是否发生重启或权限失效。
-  - type: textarea
-    id: reproduction
-    attributes:
-      label: 步骤、预期与实际结果 / Steps and results
+      label: 操作步骤、预期与实际结果
+      description: "请注明是否发生重启、换卡或覆盖升级；若无法稳定复现，也请说明。"
     validations:
       required: true
   - type: textarea
-    id: logs
+    id: sms
     attributes:
-      label: 脱敏日志或截图 / Redacted evidence
+      label: 短信问题补充（其他问题可不填）
+      description: "运营商名称、短信 APP 版本、发生时间及发送/接收分别是否成功。不填写号码、内容或 PDU。"
+  - type: textarea
+    id: error
+    attributes:
+      label: 错误提示（可选）
+      description: "仅摘录不含隐私的错误文字，不粘贴完整日志。"
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: 隐私检查
+      options:
+        - label: "我已检查正文与附件，不包含上述敏感信息。"
+          required: true

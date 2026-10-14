@@ -1,0 +1,19 @@
+name: 功能建议
+description: 说明使用场景与希望改善的体验
+title: "[建议] "
+body:
+  - type: markdown
+    attributes:
+      value: "请勿附上短信内容、号码、设备码、授权材料、密钥或原始日志。"
+  - type: textarea
+    id: need
+    attributes:
+      label: 使用场景与遇到的不便
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: 希望达到的效果
+    validations:
+      required: true
