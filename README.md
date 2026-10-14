@@ -1,16 +1,26 @@
-<p align="center">
-  <img src="scrmod-app-icon.png" width="88" alt="SCRMod 应用图标">
+<div align="center">
+
+<img src="scrmod-app-icon.png" width="88" alt="SCRMod 应用图标">
+
+<h1>SCRMod</h1>
+
+<p><strong>Advanced Control &amp; Diagnostics for Samsung SCR-01</strong></p>
+
+<p>
+  <a href="https://github.com/RedoRosetta/SCRMod/releases">下载发布版本</a>
+  ·
+  <a href="docs/GETTING_STARTED.md">使用说明</a>
+  ·
+  <a href="docs/RELEASE_BUILD58.md">Build58 更新记录</a>
+  ·
+  <a href="https://github.com/RedoRosetta/SCRMod/issues/new/choose">问题反馈</a>
 </p>
 
-<h1 align="center">SCRMod</h1>
-
-<p align="center"><strong>Advanced Control &amp; Diagnostics for Samsung SCR-01</strong></p>
+</div>
 
 SCRMod 基于 [SCRoot](https://github.com/hackintoanetwork/SCRoot) 提供的临时 Root 权限，为三星 SCR-01（Galaxy 5G Mobile Wi-Fi）扩展更多实用功能，包括热点信道设置、流量上限调整、蜂窝网络与小区信息分析，以及原设备未提供的短信收发支持。
 
 目前主要适配 **SCR-01 / SM-H412J，Android 11，SCR01KDU1AVK2 固件**。应用针对横屏、竖屏及深色模式进行了界面优化，让不同使用场景下的操作和信息查看更加方便。
-
-[下载发布版本](https://github.com/RedoRosetta/SCRMod/releases) · [使用说明](docs/GETTING_STARTED.md) · [Build58 更新记录](docs/RELEASE_BUILD58.md) · [问题反馈](https://github.com/RedoRosetta/SCRMod/issues/new/choose)
 
 > 当前文档对应 SCRMod 1.0 Build58。GitHub 专版 APK 请从 Release 下载，公开源码范围见下文。
 
