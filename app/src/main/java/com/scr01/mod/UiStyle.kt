@@ -25,18 +25,21 @@ import androidx.compose.ui.draw.clip
 internal object AppUi {
     val SpaceXs = 4.dp
     val SpaceSm = 8.dp
-    val SpaceMd = 12.dp
-    val SpaceLg = 16.dp
+    val SpaceMd = 10.dp
+    val SpaceLg = 14.dp
     val PagePadding = PaddingValues(horizontal = SpaceLg, vertical = SpaceMd)
-    val SectionPadding = PaddingValues(horizontal = SpaceLg, vertical = SpaceMd)
+    val SectionPadding = PaddingValues(horizontal = SpaceLg, vertical = SpaceSm)
+    val HeadingPadding = PaddingValues(horizontal = SpaceLg, vertical = 6.dp)
+    val StatusCardHeight = 80.dp
+    val DataLimitPadding = PaddingValues(horizontal = SpaceLg, vertical = 16.dp)
     val TouchHeight = 48.dp
-    val ButtonHeight = 48.dp
+    val ButtonHeight = 38.dp
     val ButtonPadding = PaddingValues(horizontal = SpaceMd, vertical = SpaceXs)
-    val FieldHeight = 48.dp
+    val FieldHeight = 42.dp
     val ContentWidth = 960.dp
     val WideWidth = 600.dp
     val DialogShape = RoundedCornerShape(20.dp)
-    val CardShape = RoundedCornerShape(16.dp)
+    val CardShape = RoundedCornerShape(24.dp)
     val ControlShape = RoundedCornerShape(22.dp)
     val FieldShape = ControlShape
 }
@@ -108,7 +111,7 @@ internal fun ScrModSecondaryButton(onClick: () -> Unit, modifier: Modifier = Mod
     enabled: Boolean = true, shape: Shape = AppUi.ControlShape,
     contentPadding: PaddingValues = AppUi.ButtonPadding,
     content: @Composable RowScope.() -> Unit) {
-    FilledTonalButton(onClick, modifier.minimumInteractiveComponentSize().heightIn(min = AppUi.ButtonHeight), enabled, shape,
+    FilledTonalButton(onClick, modifier.heightIn(min = AppUi.ButtonHeight), enabled, shape,
         colors = ButtonDefaults.filledTonalButtonColors(containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer),
         contentPadding = contentPadding, content = content)
@@ -117,9 +120,9 @@ internal fun ScrModSecondaryButton(onClick: () -> Unit, modifier: Modifier = Mod
 @Composable
 internal fun ScrModTextButton(onClick: () -> Unit, modifier: Modifier = Modifier,
     enabled: Boolean = true, shape: Shape = AppUi.ControlShape,
-    contentPadding: PaddingValues = PaddingValues(horizontal = AppUi.SpaceSm, vertical = AppUi.SpaceSm),
+    contentPadding: PaddingValues = PaddingValues(horizontal = AppUi.SpaceSm, vertical = AppUi.SpaceXs),
     content: @Composable RowScope.() -> Unit) {
-    TextButton(onClick, modifier.minimumInteractiveComponentSize().heightIn(min = AppUi.ButtonHeight), enabled, shape,
+    TextButton(onClick, modifier.heightIn(min = AppUi.ButtonHeight), enabled, shape,
         contentPadding = contentPadding, content = content)
 }
 
@@ -131,7 +134,7 @@ internal fun ScrModChoice(selected: Boolean, onClick: () -> Unit, modifier: Modi
         color = if (selected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent,
         contentColor = if (!enabled) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
             else if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant) {
-        Box(Modifier.padding(horizontal = AppUi.SpaceLg, vertical = AppUi.SpaceSm), contentAlignment = Alignment.Center) { label() }
+        Box(Modifier.padding(horizontal = AppUi.SpaceLg, vertical = AppUi.SpaceXs), contentAlignment = Alignment.Center) { label() }
     }
 }
 
@@ -224,7 +227,7 @@ internal fun ScrModButton(onClick: () -> Unit, modifier: Modifier = Modifier, en
         ScrModTextButton(onClick, modifier, enabled, shape, contentPadding, content)
         return
     }
-    Button(onClick, modifier.minimumInteractiveComponentSize().heightIn(min = AppUi.ButtonHeight), enabled = enabled, shape = shape,
+    Button(onClick, modifier.heightIn(min = AppUi.ButtonHeight), enabled = enabled, shape = shape,
         colors = ButtonDefaults.buttonColors(containerColor = if (kind == ButtonKind.DESTRUCTIVE) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
             contentColor = if (kind == ButtonKind.DESTRUCTIVE) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onPrimary),
         contentPadding = contentPadding, content = content)
@@ -242,3 +245,17 @@ internal fun ScrModSwitch(checked: Boolean, onCheckedChange: ((Boolean) -> Unit)
 
 internal fun displayAppVersion(context: android.content.Context): String =
     appVersionName(context).replace(Regex("\\s*\\(build(\\d+)\\)", RegexOption.IGNORE_CASE), " · Build $1")
+
+/** Same inset, vertical alignment and wrapping for primary headings and adjacent state. */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+internal fun PageHeading(title:String,status:@Composable ()->Unit) {
+    FlowRow(Modifier.fillMaxWidth().padding(AppUi.HeadingPadding),
+        horizontalArrangement=Arrangement.spacedBy(16.dp),verticalArrangement=Arrangement.spacedBy(4.dp)) {
+        Box(Modifier.heightIn(min=36.dp),contentAlignment=Alignment.CenterStart) {
+            Text(title,style=MaterialTheme.typography.headlineSmall,maxLines=1,
+                overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
+        }
+        Box(Modifier.heightIn(min=36.dp),contentAlignment=Alignment.CenterStart) { status() }
+    }
+}

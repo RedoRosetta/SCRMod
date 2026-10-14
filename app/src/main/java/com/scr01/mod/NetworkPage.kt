@@ -93,30 +93,32 @@ internal fun HotspotPage(
     }
 
     ScrModPage(modifier) {
-        ScrModCard(Modifier.fillMaxWidth(), shape = AppUi.CardShape) {
-            Column(Modifier.padding(AppUi.SectionPadding), verticalArrangement = Arrangement.spacedBy(AppUi.SpaceSm)) {
-                Text("热点状态", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Medium)
-                BoxWithConstraints(Modifier.fillMaxWidth()) {
-                    val signal: @Composable () -> Unit = { StatusLight(hotspot.state.label(), hotspot.state == HotspotState.On) }
-                    val bandStatus: @Composable () -> Unit = { HotspotMetric(Icons.Default.Wifi, bandLabel) }
-                    val channelStatus: @Composable () -> Unit = { HotspotMetric(Icons.Default.SettingsInputAntenna, listOfNotNull(hotspot.channel?.toString(), hotspot.frequencyMhz?.let { "$it MHz" }).joinToString(" · ").ifBlank { "未知" }) }
-                    val bandwidthStatus: @Composable () -> Unit = { HotspotMetric(Icons.Default.SwapHoriz, hotspot.bandwidthMhz?.let { "$it MHz" } ?: "未知") }
-                    if (useWideLayout(maxWidth)) Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(AppUi.SpaceLg)) {
-                        signal(); bandStatus(); channelStatus(); bandwidthStatus()
-                    } else Column(verticalArrangement = Arrangement.spacedBy(AppUi.SpaceSm)) {
-                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(AppUi.SpaceMd)) {
-                            Box(Modifier.weight(1f)) { signal() }; Box(Modifier.weight(1f)) { bandStatus() }
-                        }
-                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(AppUi.SpaceMd)) {
-                            Box(Modifier.weight(1f)) { channelStatus() }; Box(Modifier.weight(1f)) { bandwidthStatus() }
-                        }
-                    }
+        PageHeading("热点状态") {
+            StatusLight(hotspot.state.label(),hotspot.state==HotspotState.On)
+        }
+        ScrModCard(Modifier.fillMaxWidth().heightIn(min=AppUi.StatusCardHeight), shape=AppUi.CardShape) {
+            BoxWithConstraints(Modifier.padding(AppUi.SectionPadding)) {
+                val values=listOf(Triple(Icons.Default.Wifi,"频率",hotspot.frequencyMhz?.let { "$it MHz" } ?: bandLabel),
+                    Triple(Icons.Default.SettingsInputAntenna,"信道",hotspot.channel?.toString() ?: "待确认"),
+                    Triple(Icons.Default.SwapHoriz,"频宽",hotspot.bandwidthMhz?.let { "$it MHz" } ?: "待确认"))
+                if(useWideLayout(maxWidth)) Row(Modifier.fillMaxWidth().heightIn(min=64.dp),verticalAlignment=Alignment.CenterVertically) {
+                    values.forEach { (icon,label,value)->Row(Modifier.weight(1f),horizontalArrangement=Arrangement.Center,verticalAlignment=Alignment.CenterVertically) {
+                        Icon(icon,null,Modifier.size(20.dp),tint=MaterialTheme.colorScheme.onSurfaceVariant)
+                        Spacer(Modifier.width(AppUi.SpaceSm))
+                        Text(label,style=MaterialTheme.typography.titleMedium,color=MaterialTheme.colorScheme.onSurfaceVariant)
+                        Spacer(Modifier.width(AppUi.SpaceMd))
+                        Text(value,style=MaterialTheme.typography.labelLarge,color=MaterialTheme.colorScheme.primary,maxLines=1)
+                    } }
+                } else Column(Modifier.fillMaxWidth()) {
+                    values.forEach { (icon,label,value)->Row(Modifier.fillMaxWidth().heightIn(min=48.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(8.dp)) {
+                        Icon(icon,null,Modifier.size(20.dp),tint=MaterialTheme.colorScheme.onSurfaceVariant);Text(label,Modifier.weight(1f),style=MaterialTheme.typography.titleMedium,color=MaterialTheme.colorScheme.onSurfaceVariant);Text(value,style=MaterialTheme.typography.bodyMedium,color=MaterialTheme.colorScheme.primary,maxLines=1)
+                    } }
                 }
             }
         }
 
         ScrModCard(Modifier.fillMaxWidth(), shape = AppUi.CardShape) {
-            Column(Modifier.padding(AppUi.SectionPadding)) {
+            Column(Modifier.padding(start=AppUi.SpaceLg,end=AppUi.SpaceLg,top=AppUi.SpaceSm,bottom=4.dp)) {
                 Text("热点设置", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Medium)
                 Spacer(Modifier.height(AppUi.SpaceSm))
                 Text("待应用的 5 GHz 信道", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -204,17 +206,10 @@ internal fun HotspotPage(
                         style = MaterialTheme.typography.bodySmall,
                     )
                 }
-                HorizontalDivider(Modifier.padding(vertical = 8.dp))
-                SettingSwitch(
-                    title = "开机自动应用信道",
-                    subtitle = if (autoSettings.applyAfterBoot) "设备开机后应用已保存的信道" else "请先在设置页开启“开机自动应用设置”",
-                    checked = autoSettings.applyOnBoot,
-                    enabled = autoSettings.applyAfterBoot && !isBusy,
-                    onCheckedChange = { enabled -> onAutoSettingsChanged(autoSettings.copy(applyOnBoot = enabled)) },
-                )
+
             }
         }
-        NatDiagnosticsCard(addLog)
+
     }
 
     if (showApplyConfirm) {
@@ -269,6 +264,6 @@ internal fun HotspotPage(
 private fun HotspotMetric(icon: androidx.compose.ui.graphics.vector.ImageVector, value: String) {
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(AppUi.SpaceSm)) {
         Icon(icon, contentDescription = null, modifier = Modifier.size(16.dp))
-        Text(value, style = MaterialTheme.typography.bodyMedium)
+        Text(value,Modifier.weight(1f),style=MaterialTheme.typography.bodyMedium,maxLines=2,overflow=androidx.compose.ui.text.style.TextOverflow.Ellipsis)
     }
 }

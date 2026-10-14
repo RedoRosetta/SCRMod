@@ -53,6 +53,7 @@ class MainActivity : ComponentActivity() {
 private enum class Page(val label: String) {
     Home("主页"),
     Network("网络"),
+    Hotspot("热点"),
     Settings("设置"),
 }
 
@@ -219,7 +220,8 @@ private fun Scr01ModApp(resumeTick: StateFlow<Int>) {
                             icon = {
                                 val icon = when (item) {
                                     Page.Home -> Icons.Default.Home
-                                    Page.Network -> Icons.Default.Wifi
+                                    Page.Network -> Icons.Default.NetworkCell
+                                    Page.Hotspot -> Icons.Default.Wifi
                                     Page.Settings -> Icons.Default.Settings
                                 }
                                 Icon(icon, contentDescription = null)
@@ -254,7 +256,7 @@ private fun Scr01ModApp(resumeTick: StateFlow<Int>) {
             when (page) {
                 Page.Home -> HomePage(
                     status = status,
-                    onOpenNetwork = { page = Page.Network },
+                    onOpenNetwork = { page = Page.Hotspot },
                     hotspot = hotspot,
                     dataUsagePeriod = dataUsagePeriod,
                     onDataUsagePeriodChanged = { if (!dataUsageOperation.running) {
@@ -276,7 +278,9 @@ private fun Scr01ModApp(resumeTick: StateFlow<Int>) {
                     onRestoreDefaults = ::restoreDataDefaults,
                 )
 
-                Page.Network -> HotspotPage(
+                Page.Network -> MobileNetworkPage(modifier = Modifier.padding(padding), addLog = ::addLog)
+
+                Page.Hotspot -> HotspotPage(
                     status = status,
                     hotspot = hotspot,
                     moduleAsset = moduleAsset,

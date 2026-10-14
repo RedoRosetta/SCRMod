@@ -52,6 +52,11 @@ fun Scr01ModTheme(content: @Composable () -> Unit) {
             large = AppUi.CardShape,
             extraLarge = AppUi.DialogShape,
         ),
-        content = content,
+        content = {
+            androidx.compose.runtime.CompositionLocalProvider(
+                androidx.compose.material3.LocalMinimumInteractiveComponentSize provides androidx.compose.ui.unit.Dp(40f),
+                content=content,
+            )
+        },
     )
 }

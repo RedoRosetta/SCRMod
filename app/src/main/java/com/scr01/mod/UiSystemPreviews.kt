@@ -32,7 +32,7 @@ internal fun UiSystemPreview() {
                 }
                 ScrModAdaptivePair(
                     first = { ScrModButton({}, it) { Text("应用") } },
-                    second = { ScrModSecondaryButton({}, it) { Text("导入授权文件") } },
+                    second = { ScrModSecondaryButton({}, it) { Text("恢复默认设置") } },
                 )
                 ScrModTextField("2000", {}, Modifier.fillMaxWidth(), suffix = { Text("GB") })
                 ScrModTextField("", {}, Modifier.fillMaxWidth(), isError = true,
