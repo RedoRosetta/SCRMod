@@ -20,7 +20,7 @@ class BootChannelWorker(context: Context, parameters: WorkerParameters) :
         if (!module.safetyGatePassed) return Result.failure()
 
         val result = ChannelController(applicationContext, executor) {}
-            .apply(settings.channel, device, module, hotspot)
+            .apply(settings.channel, device, module, hotspot, settings.bandwidthMhz)
         return if (result.success) Result.success() else Result.failure()
     }
 

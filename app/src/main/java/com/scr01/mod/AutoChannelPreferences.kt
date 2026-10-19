@@ -6,6 +6,7 @@ data class AutoChannelSettings(
     val channel: Int = 36,
     val applyOnBoot: Boolean = false,
     val applyAfterBoot: Boolean = false,
+    val bandwidthMhz: Int? = null,
 )
 
 object AutoChannelPreferences {
@@ -22,6 +23,8 @@ object AutoChannelPreferences {
         val applyAfterBoot = preferences.getBoolean(bootKey, false)
         return AutoChannelSettings(
             channel = channel,
+            bandwidthMhz = if (preferences.contains("bandwidth_mhz"))
+                preferences.getInt("bandwidth_mhz", 80).takeIf { it in listOf(20, 40, 80) } else null,
             // Migrate the old setting once by reading it as the new boot-only
             // setting only when the old boot-start switch was also enabled. The
             // old key is removed on the next save.
@@ -36,11 +39,14 @@ object AutoChannelPreferences {
 
     fun save(context: Context, settings: AutoChannelSettings) {
         requireNotNull(SupportedChannels.forChannel(settings.channel))
-        context.getSharedPreferences(name, Context.MODE_PRIVATE).edit()
+        require(settings.bandwidthMhz == null || settings.bandwidthMhz in listOf(20, 40, 80))
+        val editor = context.getSharedPreferences(name, Context.MODE_PRIVATE).edit()
             .putInt(channelKey, settings.channel)
             .putBoolean(bootApplyKey, settings.applyOnBoot)
             .putBoolean(bootKey, settings.applyAfterBoot)
             .remove(legacyAppStartKey)
-            .apply()
+        if (settings.bandwidthMhz == null) editor.remove("bandwidth_mhz")
+        else editor.putInt("bandwidth_mhz", settings.bandwidthMhz)
+        editor.apply()
     }
 }

@@ -34,13 +34,15 @@ class ChannelController(
         device: DeviceStatus,
         moduleAsset: ModuleAssetStatus,
         hotspot: HotspotStatus,
-    ): ChannelApplyResult = operationMutex.withLock { applyLocked(channel, device, moduleAsset, hotspot) }
+        bandwidthMhz: Int? = null,
+    ): ChannelApplyResult = operationMutex.withLock { applyLocked(channel, device, moduleAsset, hotspot, bandwidthMhz) }
 
     private suspend fun applyLocked(
         channel: Int?,
         device: DeviceStatus,
         moduleAsset: ModuleAssetStatus,
         hotspot: HotspotStatus,
+        bandwidthMhz: Int?,
     ): ChannelApplyResult {
         onLog("开始应用：${channel?.let { "信道 $it" } ?: "自动模式"}")
         val safetyFailure = safetyFailure(device, moduleAsset)
@@ -54,7 +56,8 @@ class ChannelController(
             } else restored
         }
 
-        val target = SupportedChannels.forChannel(channel) ?: return fail("不支持的信道：$channel")
+        val target = (if (bandwidthMhz == null) SupportedChannels.forChannel(channel)
+            else SupportedChannels.forChannel(channel, bandwidthMhz)) ?: return fail("不支持的信道或频宽组合")
         if (hotspot.state != HotspotState.On) return fail("热点未开启，无法切换运行信道")
 
         if (channel in 36..48) {
@@ -75,15 +78,18 @@ class ChannelController(
             delay(700)
             val actual = HotspotStatusReader.read(true, executor, onLog)
             lastActual = actual
-            if (actual.channel == target.channel && actual.frequencyMhz == target.frequencyMhz) {
+            if (target.matchesReadback(actual, requireBandwidth = bandwidthMhz != null)) {
                 onLog("实际信道回读成功：${actual.channel} / ${actual.frequencyMhz} MHz")
-                return ChannelApplyResult(true, "已应用，当前信道：${target.channel}", actual)
+                return ChannelApplyResult(true, if (bandwidthMhz == null) "已应用，当前信道：${target.channel}"
+                    else "已应用：信道 ${target.channel} · 频宽 $bandwidthMhz MHz", actual)
             }
         }
         val observed = lastActual?.let {
             "最后回读 channel=${it.channel ?: "未知"}, freq=${it.frequencyMhz ?: "未知"}, bandwidth=${it.bandwidthMhz ?: "未知"}"
         } ?: "没有有效回读"
-        return fail("hostapd 返回 OK，但未保持目标 channel=${target.channel}, freq=${target.frequencyMhz}；$observed")
+        val message = "hostapd 返回 OK，但未确认目标信道/频率${if (bandwidthMhz != null) "/$bandwidthMhz MHz频宽" else ""}；$observed"
+        onLog(message)
+        return ChannelApplyResult(false, message, lastActual)
     }
 
     private fun safetyFailure(device: DeviceStatus, moduleAsset: ModuleAssetStatus): String? = when {

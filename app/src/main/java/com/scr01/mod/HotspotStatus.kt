@@ -63,10 +63,10 @@ object HotspotStatusReader {
             HotspotStatus(HotspotState.On, channel, frequency, width)
         }
 
-    private fun bandwidth(vhtWidth: Int?, secondaryChannel: Int?): Int? = when (vhtWidth) {
+    internal fun bandwidth(vhtWidth: Int?, secondaryChannel: Int?): Int? = when (vhtWidth) {
         1 -> 80
         2 -> 160
-        3 -> 80
+        3 -> null // 80+80 is not the contiguous 80 MHz offered by this control.
         0 -> if (secondaryChannel == null) null else if (secondaryChannel == 0) 20 else 40
         else -> null
     }

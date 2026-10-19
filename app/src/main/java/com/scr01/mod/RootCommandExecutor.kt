@@ -162,10 +162,14 @@ private object RootExecutableRegistry {
 }
 
 class RootCommandExecutor private constructor(
-    private val onLog: (String) -> Unit,
+    private val onLog: ((String) -> Unit)?,
     private val discovery: RootExecutableDiscovery,
     @Suppress("UNUSED_PARAMETER") marker: Unit,
 ) {
+    private val outputLog = RootOutputLog(onLog)
+    companion object {
+        fun silent(): RootCommandExecutor = RootCommandExecutor(null, RootExecutableRegistry.discovery, Unit)
+    }
     constructor(onLog: (String) -> Unit) : this(onLog, RootExecutableRegistry.discovery, Unit)
 
     internal constructor(
@@ -174,7 +178,7 @@ class RootCommandExecutor private constructor(
     ) : this(onLog, discovery, Unit)
 
     suspend fun execute(command: String, timeoutSeconds: Long = 6, forceRootProbe: Boolean = false): RootCommandResult = withContext(Dispatchers.IO) {
-        onLog("命令：${displayCommand(command)}")
+        onLog?.invoke("命令：${displayCommand(command)}")
         val root = discovery.resolve(forceRefresh = forceRootProbe)
         val executable = root.executable
         if (executable == null) {
@@ -193,7 +197,7 @@ class RootCommandExecutor private constructor(
 
         if (command == "id") {
             val message = "Root 入口：$executable（App 进程内缓存）"
-            onLog(message)
+            onLog?.invoke(message)
             Log.i("SCR01Mod.Root", message)
         }
 
@@ -280,9 +284,7 @@ class RootCommandExecutor private constructor(
     }
 
     private fun logResult(result: RootCommandResult) {
-        onLog("退出码：${result.exitCode?.toString() ?: if (result.timedOut) "超时" else "不可用"}")
-        if (result.stdout.isNotBlank()) onLog("stdout：${safeOutput(result.stdout)}")
-        if (result.stderr.isNotBlank()) onLog("stderr：${safeOutput(result.stderr)}")
+        outputLog.result(result)
     }
 
     private fun displayCommand(command: String): String = when {
@@ -298,8 +300,4 @@ class RootCommandExecutor private constructor(
         else -> "只读系统命令"
     }
 
-    private fun safeOutput(value: String): String = value
-        .replace(Regex("(?i)(psk|password|passphrase)=[^\\s]+"), "$1=<已隐藏>")
-        .replace('\n', ' ')
-        .take(400)
 }

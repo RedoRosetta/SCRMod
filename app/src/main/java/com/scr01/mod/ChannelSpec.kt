@@ -18,8 +18,15 @@ data class ChannelSpec(
         } else if (bandwidthMhz == 20) {
             require(centerFreq1Mhz == frequencyMhz)
             require(secondaryChannelOffset == 0)
+        } else if (bandwidthMhz == 40) {
+            require(secondaryChannelOffset == 1 || secondaryChannelOffset == -1)
+            require(centerFreq1Mhz == frequencyMhz + secondaryChannelOffset!! * 10)
         }
     }
+
+    fun matchesReadback(actual: HotspotStatus, requireBandwidth: Boolean): Boolean =
+        actual.channel == channel && actual.frequencyMhz == frequencyMhz &&
+            (!requireBandwidth || (actual.state == HotspotState.On && actual.bandwidthMhz == bandwidthMhz))
 
     fun hostapdCommand(): String {
         val geometry = if (centerFreq1Mhz != null && secondaryChannelOffset != null) {
@@ -50,4 +57,15 @@ object SupportedChannels {
     )
 
     fun forChannel(channel: Int): ChannelSpec? = all.firstOrNull { it.channel == channel }
+
+    fun forChannel(channel: Int, bandwidthMhz: Int): ChannelSpec? {
+        val base = forChannel(channel) ?: return null
+        return when (bandwidthMhz) {
+            80 -> base
+            40 -> base.copy(bandwidthMhz = 40,
+                centerFreq1Mhz = base.frequencyMhz + base.secondaryChannelOffset!! * 10)
+            20 -> base.copy(bandwidthMhz = 20, centerFreq1Mhz = base.frequencyMhz, secondaryChannelOffset = 0)
+            else -> null
+        }
+    }
 }

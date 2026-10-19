@@ -63,6 +63,7 @@ internal fun HotspotPage(
     var selected by remember(autoSettings.channel) {
         mutableStateOf(channels.firstOrNull { it.channel == autoSettings.channel } ?: channels.first())
     }
+    val selectedBandwidth = autoSettings.bandwidthMhz ?: 80
     var expanded by remember { mutableStateOf(false) }
     var operation by remember { mutableStateOf(UiOperationState()) }
     val isApplying = operation.running
@@ -182,6 +183,14 @@ internal fun HotspotPage(
                     }
 
                 }
+                Spacer(Modifier.height(AppUi.SpaceSm))
+                Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically,
+                    horizontalArrangement=Arrangement.spacedBy(AppUi.SpaceSm)) {
+                    Text("目标频宽",style=MaterialTheme.typography.titleMedium)
+                    ScrModSelectionGroup(listOf(20,40,80),selectedBandwidth,
+                        { onAutoSettingsChanged(autoSettings.copy(bandwidthMhz=it)) },{ "$it MHz" },
+                        modifier=Modifier.weight(1f),enabled=!isBusy && isFiveGhz && selected.channel!=null)
+                }
                 bandSettingsMessage?.takeIf { bandSettingsMessageIsError }?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall) }
                 if (!canApply) {
                     Spacer(Modifier.height(8.dp))
@@ -216,8 +225,8 @@ internal fun HotspotPage(
         AlertDialog(
             containerColor = MaterialTheme.colorScheme.surface,
             onDismissRequest = { showApplyConfirm = false },
-            title = { Text("应用信道设置？") },
-            text = { Text(selected.channel?.let { "热点将切换到信道 $it。" } ?: "将停止固定信道控制，交由系统管理。") },
+            title = { Text("应用热点设置？") },
+            text = { Text(selected.channel?.let { "热点将切换到信道 $it、$selectedBandwidth MHz；连接可能短暂中断。" } ?: "将停止固定信道控制，交由系统管理。") },
             confirmButton = {
                 ScrModTextButton(onClick = {
                     showApplyConfirm = false
@@ -225,9 +234,9 @@ internal fun HotspotPage(
                     scope.launch {
                         try {
                         val controller = ChannelController(context, RootCommandExecutor {}, {})
-                        val result = controller.apply(selected.channel, status, moduleAsset, hotspot)
+                        val result = controller.apply(selected.channel, status, moduleAsset, hotspot, selected.channel?.let { selectedBandwidth })
                         val message = if (result.success) {
-                            selected.channel?.let { "已应用信道 $it" } ?: "已交由系统管理信道"
+                            result.message
                         } else if (result.rollback?.state == KernelRollbackState.ROLLBACK_FAILED) {
                             "应用失败，未确认恢复到安全状态；请查看诊断日志"
                         } else if (result.kernelVerification == KernelVerificationState.VERIFICATION_UNAVAILABLE ||
@@ -235,7 +244,7 @@ internal fun HotspotPage(
                         ) {
                             "安全验证未通过，未切换信道；请查看诊断日志"
                         } else {
-                            "应用失败，请在设置页查看诊断日志"
+                            result.actualStatus?.let { "未确认目标设置，当前信道 ${it.channel ?: "未知"} · 频宽 ${it.bandwidthMhz?.let { width -> "$width MHz" } ?: "未报告"}" } ?: result.message
                         }
                         operation = UiOperationState(
                             if (result.success) UiOperationPhase.SUCCEEDED else if (result.rollback?.state == KernelRollbackState.ROLLBACK_FAILED || result.kernelVerification == KernelVerificationState.VERIFICATION_UNAVAILABLE) UiOperationPhase.UNKNOWN else UiOperationPhase.FAILED,
