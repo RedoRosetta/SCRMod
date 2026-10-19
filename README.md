@@ -201,8 +201,8 @@ SCRMod 是一个持续维护的个人项目。
 <th>微信支付 WeChat Pay</th>
 </tr>
 <tr>
-<td align="center"><img src="https://raw.githubusercontent.com/RedoRosetta/RightDisplay/HEAD/assets/sponsor/alipay.png" width="220" alt="支付宝二维码"></td>
-<td align="center"><img src="https://raw.githubusercontent.com/RedoRosetta/RightDisplay/HEAD/assets/sponsor/wechat-pay.png" width="220" alt="微信支付二维码"></td>
+<td align="center"><img src="assets/sponsor/alipay.png" width="220" alt="支付宝二维码"></td>
+<td align="center"><img src="assets/sponsor/wechat-pay.png" width="220" alt="微信支付二维码"></td>
 </tr>
 </table>
 
