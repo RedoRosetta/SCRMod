@@ -19,6 +19,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,7 +64,8 @@ internal fun HotspotPage(
     var selected by remember(autoSettings.channel) {
         mutableStateOf(channels.firstOrNull { it.channel == autoSettings.channel } ?: channels.first())
     }
-    val selectedBandwidth = autoSettings.bandwidthMhz ?: 80
+    val selectedBandwidth = autoSettings.targetBandwidthMhz
+    val hotspotRestoreMessage by HotspotStartRestore.message.collectAsStateWithLifecycle()
     var expanded by remember { mutableStateOf(false) }
     var operation by remember { mutableStateOf(UiOperationState()) }
     val isApplying = operation.running
@@ -192,6 +194,16 @@ internal fun HotspotPage(
                         modifier=Modifier.weight(1f),enabled=!isBusy && isFiveGhz && selected.channel!=null)
                 }
                 bandSettingsMessage?.takeIf { bandSettingsMessageIsError }?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall) }
+                Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically,
+                    horizontalArrangement=Arrangement.spacedBy(AppUi.SpaceSm)) {
+                    Column(Modifier.weight(1f)) {
+                        Text("热点重开后恢复",style=MaterialTheme.typography.titleMedium)
+                        Text("恢复已保存的信道与目标频宽一次，允许系统后续降宽",style=MaterialTheme.typography.bodySmall)
+                    }
+                    Switch(checked=autoSettings.restoreOnHotspotStart,enabled=!isBusy && (autoSettings.restoreOnHotspotStart || (isFiveGhz && selected.channel!=null)),
+                        onCheckedChange={onAutoSettingsChanged(autoSettings.copy(restoreOnHotspotStart=it,bandwidthMhz=selectedBandwidth))})
+                }
+                if(autoSettings.restoreOnHotspotStart && hotspotRestoreMessage.isNotBlank()) Text(hotspotRestoreMessage,style=MaterialTheme.typography.bodySmall)
                 if (!canApply) {
                     Spacer(Modifier.height(8.dp))
                     Text(
@@ -234,6 +246,8 @@ internal fun HotspotPage(
                     scope.launch {
                         try {
                         val controller = ChannelController(context, RootCommandExecutor {}, {})
+                        onAutoSettingsChanged(if(selected.channel!=null) autoSettings.copy(channel=selected.channel!!,bandwidthMhz=selectedBandwidth)
+                            else autoSettings.copy(restoreOnHotspotStart=false))
                         val result = controller.apply(selected.channel, status, moduleAsset, hotspot, selected.channel?.let { selectedBandwidth })
                         val message = if (result.success) {
                             result.message

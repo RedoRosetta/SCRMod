@@ -7,7 +7,10 @@ data class AutoChannelSettings(
     val applyOnBoot: Boolean = false,
     val applyAfterBoot: Boolean = false,
     val bandwidthMhz: Int? = null,
-)
+    val restoreOnHotspotStart: Boolean = false,
+) {
+    val targetBandwidthMhz: Int get() = bandwidthMhz ?: 80
+}
 
 object AutoChannelPreferences {
     private const val name = "auto_channel"
@@ -23,6 +26,7 @@ object AutoChannelPreferences {
         val applyAfterBoot = preferences.getBoolean(bootKey, false)
         return AutoChannelSettings(
             channel = channel,
+            restoreOnHotspotStart = preferences.getBoolean("restore_on_hotspot_start", false),
             bandwidthMhz = if (preferences.contains("bandwidth_mhz"))
                 preferences.getInt("bandwidth_mhz", 80).takeIf { it in listOf(20, 40, 80) } else null,
             // Migrate the old setting once by reading it as the new boot-only
@@ -44,6 +48,7 @@ object AutoChannelPreferences {
             .putInt(channelKey, settings.channel)
             .putBoolean(bootApplyKey, settings.applyOnBoot)
             .putBoolean(bootKey, settings.applyAfterBoot)
+            .putBoolean("restore_on_hotspot_start", settings.restoreOnHotspotStart)
             .remove(legacyAppStartKey)
         if (settings.bandwidthMhz == null) editor.remove("bandwidth_mhz")
         else editor.putInt("bandwidth_mhz", settings.bandwidthMhz)

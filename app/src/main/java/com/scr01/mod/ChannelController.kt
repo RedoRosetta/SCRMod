@@ -35,7 +35,9 @@ class ChannelController(
         moduleAsset: ModuleAssetStatus,
         hotspot: HotspotStatus,
         bandwidthMhz: Int? = null,
-    ): ChannelApplyResult = operationMutex.withLock { applyLocked(channel, device, moduleAsset, hotspot, bandwidthMhz) }
+        stillCurrent: () -> Boolean = { true },
+        skipIfAlreadyMatched: Boolean = false,
+    ): ChannelApplyResult = operationMutex.withLock { applyLocked(channel, device, moduleAsset, hotspot, bandwidthMhz, stillCurrent,skipIfAlreadyMatched) }
 
     private suspend fun applyLocked(
         channel: Int?,
@@ -43,10 +45,13 @@ class ChannelController(
         moduleAsset: ModuleAssetStatus,
         hotspot: HotspotStatus,
         bandwidthMhz: Int?,
+        stillCurrent: () -> Boolean,
+        skipIfAlreadyMatched: Boolean,
     ): ChannelApplyResult {
         onLog("开始应用：${channel?.let { "信道 $it" } ?: "自动模式"}")
         val safetyFailure = safetyFailure(device, moduleAsset)
         if (safetyFailure != null) return fail(safetyFailure)
+        if (!stillCurrent()) return fail("热点恢复请求已失效，未执行切换")
 
         if (channel == null) {
             val restored = stopProtectionIfNeeded()
@@ -68,6 +73,13 @@ class ChannelController(
             if (!restored.success) return restored
         }
 
+        if (!stillCurrent()) return fail("热点或目标设置已变化，未执行切换")
+        if(skipIfAlreadyMatched) {
+            val fresh=HotspotStatusReader.read(true,executor,onLog)
+            if(!stillCurrent()) return fail("热点恢复请求已失效，未执行切换")
+            if(target.matchesReadback(fresh,true)) return ChannelApplyResult(true,"当前已符合目标，无需重复切换",fresh)
+            if(fresh.state!=HotspotState.On) return fail("热点已关闭，未执行切换")
+        }
         val switch = executor.execute(target.hostapdCommand(), timeoutSeconds = 12)
         if (!switch.succeeded || switch.stdout.lineSequence().none { it.trim() == "OK" }) {
             return fail("hostapd 未确认信道切换：${switch.describe()}")
@@ -78,16 +90,16 @@ class ChannelController(
             delay(700)
             val actual = HotspotStatusReader.read(true, executor, onLog)
             lastActual = actual
-            if (target.matchesReadback(actual, requireBandwidth = bandwidthMhz != null)) {
+            if (!stillCurrent()) return fail("热点恢复请求已失效，未确认应用")
+            if (target.matchesReadback(actual, requireBandwidth = true)) {
                 onLog("实际信道回读成功：${actual.channel} / ${actual.frequencyMhz} MHz")
-                return ChannelApplyResult(true, if (bandwidthMhz == null) "已应用，当前信道：${target.channel}"
-                    else "已应用：信道 ${target.channel} · 频宽 $bandwidthMhz MHz", actual)
+                return ChannelApplyResult(true, "已应用：信道 ${target.channel} · 频宽 ${target.bandwidthMhz} MHz", actual)
             }
         }
         val observed = lastActual?.let {
             "最后回读 channel=${it.channel ?: "未知"}, freq=${it.frequencyMhz ?: "未知"}, bandwidth=${it.bandwidthMhz ?: "未知"}"
         } ?: "没有有效回读"
-        val message = "hostapd 返回 OK，但未确认目标信道/频率${if (bandwidthMhz != null) "/$bandwidthMhz MHz频宽" else ""}；$observed"
+        val message = "hostapd 返回 OK，但未确认目标信道/频率/${target.bandwidthMhz} MHz频宽；$observed"
         onLog(message)
         return ChannelApplyResult(false, message, lastActual)
     }
